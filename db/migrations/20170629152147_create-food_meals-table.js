@@ -1,14 +1,14 @@
 
 exports.up = function(knex, Promise) {
-  let createQuery = `create table meals(
+  let createQuery = `create table food_meals(
     id serial primary key not null,
-    name text,
-    goal_calories integer
+    food_id integer references foods(id),
+    meal_id integer references meals(id)
   )`
   return knex.raw(createQuery)
 };
 
 exports.down = function(knex, Promise) {
-  let dropQuery = `drop table meals`
+  let dropQuery = `drop table food_meals`
   return knex.raw(dropQuery)
 };
