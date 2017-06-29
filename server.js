@@ -7,6 +7,7 @@ app.locals.title = 'Secret Box'
 
 app.get('/api/foods', function(request, response) {
   //return all foods that are active
+  //or only return foods that match parameter
 })
 
 app.get('/api/foods/:id', function(request, response) {
