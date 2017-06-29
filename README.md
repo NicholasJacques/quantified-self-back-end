@@ -8,3 +8,4 @@
  + run `knex migrate:latest`
  + run `knex seed:run`
  + to run tests `npm test`
+ + to start server `npm start`
