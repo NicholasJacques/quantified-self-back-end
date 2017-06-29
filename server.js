@@ -3,7 +3,7 @@ var express = require('express')
 var app = express()
 
 app.set('port', process.env.PORT || 3000)
-app.locals.title = 'Secret Box'
+app.locals.title = 'Quantified Self API'
 
 app.get('/api/foods', function(request, response) {
   //return all foods that are active
