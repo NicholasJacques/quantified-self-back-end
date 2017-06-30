@@ -1,17 +1,26 @@
 // server.js
 var express = require('express')
 var app = express()
+var Food = require('./lib/models/food')
+var pry = require('pryjs')
+
 
 app.set('port', process.env.PORT || 3000)
 app.locals.title = 'Quantified Self API'
 
 app.get('/api/foods', function(request, response) {
-  //return all foods that are active
-  //or only return foods that match parameter
+  Food.all().then(function(data){
+    // eval(pry.it)
+    response.json(data.rows)
+  })
+
 })
 
 app.get('/api/foods/:id', function(request, response) {
-  //return single food by id
+  Food.find(request.params.id).then(function(data) {
+    if (!data.rows[0]){ return response.sendStatus(404)}
+    response.json(data.rows[0])
+  })
 })
 
 app.post('/api/foods', function(request, response) {
