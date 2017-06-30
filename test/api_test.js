@@ -29,7 +29,7 @@ describe("Server", function () {
   it('should exist', function(){
     assert(app)
   })
-  describe('GET /api/foods/', function(){g 
+  describe('GET /api/foods/', function(){
 
     it('returns all of the foods', function(done){
       this.request.get('/api/foods', function(error, response){

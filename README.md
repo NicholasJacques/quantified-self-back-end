@@ -7,5 +7,6 @@
  + enter `psql` run `CREATE DATABASE quantified_self; CREATE DATABASE quantified_self_test;`
  + run `knex migrate:latest`
  + run `knex seed:run`
+ + run knex migrate:latest --env test
  + to run tests `npm test`
  + to start server `npm start`
