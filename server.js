@@ -1,9 +1,12 @@
 // server.js
-var express = require('express')
-var app = express()
-var Food = require('./lib/models/food')
-var pry = require('pryjs')
+const express = require('express')
+const app = express()
+const Food = require('./lib/models/food')
+const pry = require('pryjs')
+const bodyParser = require('body-parser')
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.set('port', process.env.PORT || 3000)
 app.locals.title = 'Quantified Self API'
@@ -22,9 +25,17 @@ app.get('/api/foods/:id', function(request, response) {
   })
 })
 
-app.post('/api/foods', function(request, response) {
-  //create new food
-  //return success, and food object
+app.post('/api/foods', function (request, response) {
+  let name  = request.body.name
+  let calories  = request.body.calories
+  if (!name || !calories) {
+    return response.status(422).send({
+        error: 'Your order could not be completed'
+    })
+  }
+  Food.create(name, calories).then(function (data) {
+    return response.status(201).send()
+  })
 })
 
 app.delete('/api/foods/:id', function(request, response) {

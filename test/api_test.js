@@ -3,6 +3,11 @@ const app = require('../server')
 const request = require('request')
 const Food = require('../lib/models/food')
 const pry = require('pryjs')
+const bodyParser = require('body-parser')
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
 
 describe("Server", function () {
   this.timeout(100000)
@@ -17,7 +22,7 @@ describe("Server", function () {
       baseUrl: 'http://localhost:9876'
     })
   })
-  
+
   beforeEach(function(done) {
     // Food.create('egg', 95)
     Food.create("banana", 70)
@@ -32,7 +37,7 @@ describe("Server", function () {
   it('should exist', ()=>{
     assert(app)
   })
-  
+
   describe('GET /api/foods/', function() {
     it('returns all of the foods', function(done){
       this.request.get('/api/foods', function(error, response){
@@ -46,7 +51,7 @@ describe("Server", function () {
 
   describe('GET /api/foods/:id', function() {
     it('returns a 404 for a non valid id', function(done){
-      this.request.get('/api/foods/45', function(error, response){
+      this.request.get('/api/foods/45', function (error, response){
         if (error){done(error)}
         assert.equal(response.statusCode, 404)
         done()
@@ -57,7 +62,7 @@ describe("Server", function () {
       let food;
       const request = this.request
 
-      Food.all().then(function(data) { 
+      Food.all().then(function(data) {
         food = data.rows[0]
         request.get(`/api/foods/${food.id}`, function(error, response) {
           if (error) {done(error)}
@@ -71,9 +76,25 @@ describe("Server", function () {
     })
   })
 
-  describe('POST /api/foods', function() {
-    it('returns a 404 with invalid params', function(done) {
-      
+  describe('POST /api/foods', function () {
+    it.skip('returns 422 with invalid params', function (done) {
+        this.request.post('/api/foods', function (error, response) {
+          if (error) { done(error) }
+          assert.equal(response.statusCode, 422)
+          done()
+        })
+    })
+    it ('returns succes code with valid params', function (done) {
+      let food = {name: 'egg', calories: 200}
+      this.request.post('/api/foods', {form: food}, function (error, response) {
+        if (error) { done(error) }
+        assert.equal(response.statusCode, 201)
+        Food.all().then(function (data) {
+          eval(pry.it)
+          assert.equal(data.rows.length, 2)
+        })
+        done()
+      })
     })
   })
 })
