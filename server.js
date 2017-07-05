@@ -10,7 +10,6 @@ app.locals.title = 'Quantified Self API'
 
 app.get('/api/foods', function(request, response) {
   Food.all().then(function(data){
-    // eval(pry.it)
     response.json(data.rows)
   })
 
@@ -51,7 +50,7 @@ app.delete('api/:meal/:food_id', function(){
 })
 
 if (!module.parent){
-  app.listen(app.get('port'), function() {
+  app.listen(app.get('port'), ()=> {
     console.log(`${app.locals.title} is running on ${app.get('port')}.`)
   })
 }
