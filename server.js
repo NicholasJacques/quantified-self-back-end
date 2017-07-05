@@ -39,8 +39,9 @@ app.post('/api/foods', function (request, response) {
 })
 
 app.delete('/api/foods/:id', function(request, response) {
-  //set active status to false
-  //return success
+  Food.setInactive(request.params.id).then(function(data) {
+    return response.status(204).send()
+  })
 })
 
 app.patch('/api/foods/:id', function(request, response) {

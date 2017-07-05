@@ -123,4 +123,24 @@ describe("Server", function () {
       })
     })
   })
+
+  describe('DELETE /api/foods/:id', function () {
+    it('returns a 204 and sets that food to inactive', function(done) {
+      let food;
+      const request = this.request
+
+      Food.all().then(function(data) {
+        food = data.rows[0]
+
+        request.delete(`/api/foods/${food.id}`, function(error, response) {
+          if (error) {done(error)}
+          Food.all().then(function(data) {
+            assert.equal(data.rows.length, 0)
+            assert.equal(response.statusCode, 204)
+          })
+          done()
+        })
+      })
+    })
+  })
 })
