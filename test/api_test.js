@@ -77,23 +77,49 @@ describe("Server", function () {
   })
 
   describe('POST /api/foods', function () {
-    it.skip('returns 422 with invalid params', function (done) {
+    it('returns 422 with invalid params', function (done) {
         this.request.post('/api/foods', function (error, response) {
           if (error) { done(error) }
           assert.equal(response.statusCode, 422)
           done()
         })
     })
-    it ('returns succes code with valid params', function (done) {
+    it ('returns success code with valid params', function (done) {
       let food = {name: 'egg', calories: 200}
       this.request.post('/api/foods', {form: food}, function (error, response) {
         if (error) { done(error) }
         assert.equal(response.statusCode, 201)
         Food.all().then(function (data) {
-          eval(pry.it)
           assert.equal(data.rows.length, 2)
         })
         done()
+      })
+    })
+  })
+
+  describe('PATCH /api/foods/:id', function() {
+    it('returns a 404 for a non valid id', function(done){
+      this.request.patch('/api/foods/45', function (error, response){
+        if (error){done(error)}
+        assert.equal(response.statusCode, 404)
+        done()
+      })
+    })
+
+    it('returns a succes code', function(done) {
+      let food;
+      const request = this.request
+
+      Food.all().then(function(data) {
+        food = data.rows[0]
+
+        request.patch(`/api/foods/${food.id}`, {form: {name: "apricot"}}, function(error, response) {
+          if (error) {done(error)}
+          Food.find(food.id).then(function(data) {
+            assert.equal(data.rows[0].name, "apricot")
+          })
+          done()
+        })
       })
     })
   })
