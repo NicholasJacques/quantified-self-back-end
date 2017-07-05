@@ -39,14 +39,23 @@ app.post('/api/foods', function (request, response) {
 })
 
 app.delete('/api/foods/:id', function(request, response) {
-  //set active status to false
-  //return success
-
+  Food.setInactive(request.params.id).then(function(data) {
+    return response.status(204).send()
+  })
 })
 
 app.patch('/api/foods/:id', function(request, response) {
-  //edit food
-  //return food object
+  let food = Food.find(request.params.id).then(function(data) {
+    const body = request.body
+
+    if (!data.rows[0]){ return response.sendStatus(404)}
+    if (body.name || body.calories) {
+      Food.update(request.params.id, body).then(function(){
+        return response.status(201).send()
+      })
+    }
+    return response.status(422)
+  })
 })
 
 app.get('/api/meals', function(request, response){
