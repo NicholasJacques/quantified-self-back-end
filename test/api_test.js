@@ -8,7 +8,6 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-
 describe("Server", function () {
   this.timeout(100000)
 
@@ -106,7 +105,7 @@ describe("Server", function () {
       })
     })
 
-    it('returns a succes code', function(done) {
+    it('returns a success code', function(done) {
       let food;
       const request = this.request
 

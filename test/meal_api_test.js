@@ -62,20 +62,17 @@ describe("Server", function () {
               {meal_id: 3, food_id: 3}
             ])
           })
-        done() })
-      })
+      done() })
+    })
   })
 
-
-
-
-  describe('Get /api/meals', function () {
-    it('returns a nested object with all of the meal items', function (done) {
-      this.request.get('api/meals', function (error, response) {
+  describe('Get /api/meals/:name', function () {
+    it('returns that meal and all of its associated foods', function (done) {
+      this.request.get('api/meals/Lunch', function (error, response) {
         if (error) { done(error) }
-        eval(pry.it)
         let body = JSON.parse(response.body)
-        assert.equal(parsedFoods.length, 1)
+
+        assert.equal(body.length, 4)
         done()
       })
     })
