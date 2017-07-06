@@ -9,13 +9,13 @@ const database = require('knex')(configuration);
 // });
 
 database.raw(
-  `SELECT *.foods,
-  name.meals as meal 
+  `SELECT foods.name, foods.calories
   FROM food_meals, meals, foods
-  WHERE id.meals = meal_id.food_meals
-  AND id.foods = food_id.food_meals
-  GROUP BY meal`
+  WHERE meals.id = food_meals.meal_id
+  AND food_meals.food_id = foods.id
+  and meals.name = 'Dinner'
+`
   ).then( function(data) {
-  console.log(data.rows)
+  console.log(data)
   process.exit();
 })

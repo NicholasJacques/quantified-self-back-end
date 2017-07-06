@@ -2,6 +2,7 @@
 const express = require('express')
 const app = express()
 const Food = require('./lib/models/food')
+const Meal = require('./lib/models/meal')
 const pry = require('pryjs')
 const bodyParser = require('body-parser')
 
@@ -60,6 +61,9 @@ app.patch('/api/foods/:id', function(request, response) {
 
 app.get('/api/meals', function(request, response){
   //return nested JSON with meal[food]
+  Meal.all().then(function(data){
+    response.json(data.rows)
+  })
 })
 
 app.patch('api/meals/:id', function(){
