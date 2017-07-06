@@ -2,6 +2,7 @@
 const express = require('express')
 const app = express()
 const Food = require('./lib/models/food')
+const Meal = require('./lib/models/meal')
 const pry = require('pryjs')
 const bodyParser = require('body-parser')
 
@@ -25,7 +26,7 @@ app.get('/api/foods/:id', function(request, response) {
   })
 })
 
-app.post('/api/foods', function (request, response) {
+app.post('/api/foods', function(request, response) {
   let name  = request.body.name
   let calories  = request.body.calories
   if (!name || !calories) {
@@ -58,8 +59,11 @@ app.patch('/api/foods/:id', function(request, response) {
   })
 })
 
-app.get('/api/meals', function(request, response){
-  //return nested JSON with meal[food]
+app.get('/api/meals/:name', function(request, response) {
+  Meal.find(request.params.name).then(function(data) {
+    if (!data.rows[0]){ return response.sendStatus(404)}
+    return response.json(data.rows)
+  })
 })
 
 app.patch('api/meals/:id', function(){
