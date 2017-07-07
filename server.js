@@ -16,7 +16,6 @@ app.get('/api/foods', function(request, response) {
   Food.all().then(function(data){
     response.json(data.rows)
   })
-
 })
 
 app.get('/api/foods/:id', function(request, response) {
@@ -66,11 +65,26 @@ app.get('/api/meals/:name', function(request, response) {
   })
 })
 
-app.patch('api/meals/:id', function(){
-  //add food(s) to a meal
+app.post('/api/meals/:name', function(request, response){
+  let foodId = request.body.id
+  let meal = request.params.name
+
+  Meal.addFood(foodId, meal).then(function(x) {
+    Meal.find(meal).then(function(data) {
+      return response.json(data.rows)
+    })
+  })
 })
-app.delete('api/:meal/:food_id', function(){
-  //delete a food from a meal
+
+app.delete('/api/meals/:name', function(request, response){
+  let foodId = request.body.id
+  let meal = request.params.name
+
+  Meal.removeFood(foodId, meal).then(function() {
+    Meal.find(meal).then(function(data) {
+      return response.json(data.rows)
+    })
+  })
 })
 
 if (!module.parent){
