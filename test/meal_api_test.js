@@ -52,7 +52,7 @@ describe("Server", function () {
               {meal_id: 1, food_id: 2},
               {meal_id: 1, food_id: 3},
               {meal_id: 1, food_id: 1},
-              {meal_id: 2, food_id: 1},
+              {meal_id: 2, food_id: 2},
               {meal_id: 2, food_id: 4},
               {meal_id: 2, food_id: 2},
               {meal_id: 2, food_id: 3},
@@ -66,7 +66,7 @@ describe("Server", function () {
     })
   })
 
-  describe('Get /api/meals/:name', function () {
+  describe('GET /api/meals/:name', function () {
     it('returns that meal and all of its associated foods', function (done) {
       this.request.get('api/meals/Lunch', function (error, response) {
         if (error) { done(error) }
@@ -74,6 +74,26 @@ describe("Server", function () {
 
         assert.equal(body.length, 4)
         done()
+      })
+    })
+  })
+
+  describe('POST api/meals/:name', function() {
+    it('creates a foodmeal with attached to that meal', function(done) {
+      const request = this.request
+
+      Food.find(1).then(function(query) {
+        let food = query.rows[0]
+
+        request.post('api/meals/Lunch', {form: {id: 1}}, function (error, response) {
+          if (error) { done(error) }
+
+          let parsedResponse = JSON.parse(response.body)
+
+          assert.equal(response.statusCode, 200)
+          assert.include(parsedResponse[parsedResponse.length - 1].name, food.name)
+          done()
+        })
       })
     })
   })

@@ -66,9 +66,17 @@ app.get('/api/meals/:name', function(request, response) {
   })
 })
 
-app.patch('api/meals/:id', function(){
-  //add food(s) to a meal
+app.post('/api/meals/:name', function(request, response){
+  let foodId = request.body.id
+  let meal = request.params.name
+
+  Meal.addFood(foodId, meal).then(function(x) {
+    Meal.find(meal).then(function(data) {
+      return response.json(data.rows)
+    })
+  })
 })
+
 app.delete('api/:meal/:food_id', function(){
   //delete a food from a meal
 })
