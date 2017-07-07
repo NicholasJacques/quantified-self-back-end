@@ -89,7 +89,7 @@ describe("Server", function () {
       Food.find(1).then(function(query) {
         let food = query.rows[0]
 
-        request.post('api/meals/Lunch', {form: {id: 1}}, function (error, response) {
+        request.post('api/meals/Lunch', {form: {id: 1}}, function(error, response) {
           if (error) { done(error) }
 
           let parsedResponse = JSON.parse(response.body)
@@ -104,9 +104,15 @@ describe("Server", function () {
 
   describe('DELETE api/meals/:name', function() {
     it('removes that food from the meal', function(done) {
-      
+      this.request.delete('api/meals/Lunch', {form: {id: 2}}, function(error, response) {
+        if (error) { done(error) }
 
-      done()
+        let parsedResponse = JSON.parse(response.body)
+
+        assert.equal(response.statusCode, 200)
+        assert.equal(parsedResponse.rows.length, 3)
+        done()
+      })
     })
   })
 })

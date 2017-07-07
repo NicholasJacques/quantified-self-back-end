@@ -16,7 +16,6 @@ app.get('/api/foods', function(request, response) {
   Food.all().then(function(data){
     response.json(data.rows)
   })
-
 })
 
 app.get('/api/foods/:id', function(request, response) {
@@ -77,8 +76,15 @@ app.post('/api/meals/:name', function(request, response){
   })
 })
 
-app.delete('api/meals/:name', function(){
-  
+app.delete('/api/meals/:name', function(request, response){
+  let foodId = request.body.id
+  let meal = request.params.name
+
+  Meal.removeFood(foodId, meal).then(function() {
+    Meal.find(meal).then(function(data) {
+      return response.json(data.rows)
+    })
+  })
 })
 
 if (!module.parent){

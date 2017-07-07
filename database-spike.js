@@ -21,6 +21,10 @@ const Meal = require('./lib/models/meal')
 //   process.exit();
 // })
 
-database.raw('SELECT * FROM food_meals').then(function(data) {
+Meal.find('Lunch').then(function(data) {
   console.log(data.rows)
+  console.log('--------------')
+}).then(function() {
+  database.raw(`DELETE FROM meals where name in (
+    select name from meals order by timestamp limit 1)`)
 })
