@@ -77,10 +77,10 @@ app.post('/api/meals/:name', function(request, response){
 })
 
 app.delete('/api/meals/:name', function(request, response){
-  let foodId = request.body.id
+  let foodMealId = request.body.id
   let meal = request.params.name
 
-  Meal.removeFood(foodId, meal).then(function() {
+  Meal.removeFood(foodMealId).then(function() {
     Meal.find(meal).then(function(data) {
       return response.json(data.rows)
     })
