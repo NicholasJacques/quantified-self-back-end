@@ -77,8 +77,8 @@ app.post('/api/meals/:name', function(request, response){
   })
 })
 
-app.delete('api/:meal/:food_id', function(){
-  //delete a food from a meal
+app.delete('api/meals/:name', function(){
+  
 })
 
 if (!module.parent){
