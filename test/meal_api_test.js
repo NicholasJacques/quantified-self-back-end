@@ -104,13 +104,12 @@ describe("Server", function () {
 
   describe('DELETE api/meals/:name', function() {
     it('removes that food from the meal', function(done) {
-      this.request.delete('api/meals/Lunch', {form: {id: 2}}, function(error, response) {
+      this.request.delete('api/meals/Lunch', {form: {id: 7}}, function(error, response) {
         if (error) { done(error) }
-
         let parsedResponse = JSON.parse(response.body)
 
         assert.equal(response.statusCode, 200)
-        assert.equal(parsedResponse.rows.length, 3)
+        assert.equal(parsedResponse.length, 3)
         done()
       })
     })
