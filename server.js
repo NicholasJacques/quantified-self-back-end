@@ -53,12 +53,12 @@ app.delete('/api/foods/:id', function(request, response) {
 })
 
 app.patch('/api/foods/:id', function(request, response) {
-  let food = Food.find(request.params.id).then(function(data) {
+  let id = request.params.id
+  let food = Food.find(id).then(function(data) {
     const body = request.body
-
     if (!data.rows[0]){ return response.sendStatus(404)}
     if (body.name || body.calories) {
-      Food.update(request.params.id, body).then(function(){
+      Food.update(id, body).then(function(){
         return response.status(201).send()
       })
     }
