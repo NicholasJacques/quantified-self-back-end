@@ -5,14 +5,18 @@ const Food = require('./lib/models/food')
 const Meal = require('./lib/models/meal')
 const pry = require('pryjs')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+app.use(cors())
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
 app.set('port', process.env.PORT || 3000)
 app.locals.title = 'Quantified Self API'
 
@@ -38,7 +42,7 @@ app.post('/api/foods', function(request, response) {
     })
   }
   Food.create(name, calories).then(function (data) {
-    return response.status(201).send()
+    return response.status(201).json(data.rows)
   })
 })
 
