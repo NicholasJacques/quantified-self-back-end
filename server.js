@@ -47,7 +47,7 @@ app.post('/api/foods', function(request, response) {
 })
 
 app.delete('/api/foods/:id', function(request, response) {
-  Food.setInactive(request.params.id).then(function(data) {
+  Food.setInactive(request.params.id).then(function() {
     return response.status(204).send()
   })
 })
@@ -55,14 +55,19 @@ app.delete('/api/foods/:id', function(request, response) {
 app.patch('/api/foods/:id', function(request, response) {
   let id = request.params.id
   let food = Food.find(id).then(function(data) {
-    const body = request.body
-    if (!data.rows[0]){ return response.sendStatus(404)}
-    if (body.name || body.calories) {
-      Food.update(id, body).then(function(){
-        return response.status(201).send()
+  const body = request.body
+
+  if (!data.rows[0]) {
+    return response.sendStatus(404)
+  } else if (body.name || body.calories) {
+    Food.update(id, body).then(function(){
+      Food.all().then(function(data){
+        return response.json(data.rows)
       })
-    }
-    return response.status(422)
+    })
+  } else {
+  return response.status(422)
+  }
   })
 })
 
