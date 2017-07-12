@@ -23,7 +23,8 @@ describe("Server", function () {
   })
 
   beforeEach(function(done) {
-    // Food.create('egg', 95)
+    Food.create('cheese', 95)    
+    Food.create('egg', 95)
     Food.create("banana", 70)
     .then(function() { done() })
   })
